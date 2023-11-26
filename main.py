@@ -18,7 +18,7 @@ def get_vacancies_hh(language, page=0):
     return response.json()
 
 
-def get_salary_hh():
+def get_stat_hh():
     vacancies_by_language = {}
     languages = [
         "Python", "Java", "Javascript", "Ruby",
@@ -138,7 +138,7 @@ def create_table(title, statistics):
 def main():
     load_dotenv()
     sj_token = os.getenv('SJ_TOKEN')
-    hh_table = create_table(HH_TITLE, get_salary_hh())
+    hh_table = create_table(HH_TITLE, get_stat_hh())
 
     superjob_table = create_table(SJ_TITLE,
                                   get_statistic_vacancies_sj(sj_token))
