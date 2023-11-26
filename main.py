@@ -15,6 +15,15 @@ def get_vacancies_hh(language, page=0):
     params = {'text': language, 'area': area, 'page': page}
 
     response = requests.get(url, params=params)
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print('Ошибка при получении ответа:', err)
+
+    if response.ok:
+        pass
+    else:
+        print('Запрос завершился неудачно')
     return response.json()
 
 
