@@ -105,7 +105,7 @@ def get_statistic_vacancies_sj(sj_token):
     for language in languages:
         salary_by_vacancies = []
         for page in count(0, 1):
-            vacancies = get_vacancies_sj(sj_token, language, page=page)
+            vacancies = get_vacancies_sj(language, page=page)
             if not vacancies['objects']:
                 break
     
