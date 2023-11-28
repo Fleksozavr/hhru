@@ -20,11 +20,11 @@ def get_vacancies_hh(language, page=0):
     except requests.exceptions.HTTPError as err:
         print('Ошибка при получении ответа:', err)
 
-    if response.ok:
-        pass
-    else:
-        print('Запрос завершился неудачно')
-    return response.json()
+    if not response.ok:
+            print('Запрос завершился неудачно')
+            return None
+
+        return response.json()
 
 
 def get_stat_hh():
