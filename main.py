@@ -36,7 +36,7 @@ def get_stat_hh():
     ]
     for language in languages:
         vacancies_processed = 0
-        salary_by_vacancies = []
+        salary_by_vacancies_hh = []
         for page in count(0):
             vacancies = get_vacancies_hh(language, page=page)
             if vacancies and page >= vacancies["pages"] - 1:
@@ -48,17 +48,17 @@ def get_stat_hh():
                         vacancy['salary'].get('from'),
                         vacancy['salary'].get('to'))
                     if predicted_salary:
-                        salary_by_vacancies.append(predicted_salary)
+                        salary_by_vacancies_hh.append(predicted_salary)
         vacancies = get_vacancies_hh(language, page=page)
         total_vacancies = vacancies['found']
         average_salary = None
-        if salary_by_vacancies:
+        if salary_by_vacancies_hh:
             average_salary = int(
-                sum(salary_by_vacancies) / len(salary_by_vacancies))
+                sum(salary_by_vacancies_hh) / len(salary_by_vacancies_hh))
 
         vacancies_by_language[language] = {
             'vacancies_found': total_vacancies,
-            'vacancies_processed': len(salary_by_vacancies),
+            'vacancies_processed': len(salary_by_vacancies_hh),
             'average_salary': average_salary
         }
     return vacancies_by_language
@@ -103,7 +103,7 @@ def get_statistic_vacancies_sj(sj_token):
         "Shell"
     ]
     for language in languages:
-        salary_by_vacancies = []
+        salary_by_vacancies_sj = []
         for page in count(0, 1):
             vacancies = get_vacancies_sj(language, page=page)
             if not vacancies['objects']:
@@ -113,17 +113,17 @@ def get_statistic_vacancies_sj(sj_token):
                 predicted_salary = predict_rub_salary(vacancy["payment_from"],
                                                       vacancy["payment_to"])
                 if predicted_salary:
-                    salary_by_vacancies.append(predicted_salary)
+                    salary_by_vacancies_sj.append(predicted_salary)
         vacancies = get_vacancies_sj(language, page=page)
         total_vacancies = vacancies['total']
         average_salary = None
-        if salary_by_vacancies:
+        if salary_by_vacancies_sj:
             average_salary = int(
-                sum(salary_by_vacancies) / len(salary_by_vacancies))
+                sum(salary_by_vacancies_sj) / len(salary_by_vacancies_sj))
     
         vacancies_by_language[language] = {
             'vacancies_found': total_vacancies,
-            'vacancies_processed': len(salary_by_vacancies),
+            'vacancies_processed': len(salary_by_vacancies_sj),
             'average_salary': average_salary
         }
     
