@@ -114,7 +114,7 @@ def get_statistic_vacancies_sj(sj_token):
                                                       vacancy["payment_to"])
                 if predicted_salary:
                     salary_by_vacancies.append(predicted_salary)
-        vacancies = get_vacancies_sj(sj_token, language, page=page)
+        vacancies = get_vacancies_sj(language, page=page)
         total_vacancies = vacancies['total']
         average_salary = None
         if salary_by_vacancies:
