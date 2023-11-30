@@ -27,7 +27,7 @@ def get_stat_hh():
     ]
     for language in languages:
         vacancies_processed = 0
-        salary_by_vacancies_hh = []
+        salary_by_vacancies = []
         for page in count(0):
             vacancies = get_vacancies_hh(language, page=page)
             if vacancies and page >= vacancies["pages"] - 1:
@@ -93,7 +93,7 @@ def get_statistic_vacancies_sj(sj_token):
         "Shell"
     ]
     for language in languages:
-        salary_by_vacancies_sj = []
+        salary_by_vacancies = []
         for page in count(0, 1):
             vacancies = get_vacancies_sj(language, page=page)
             if not vacancies['objects']:
