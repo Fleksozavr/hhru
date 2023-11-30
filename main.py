@@ -17,14 +17,9 @@ def get_vacancies_hh(language, page=0):
     response = requests.get(url, params=params)
     try:
         response.raise_for_status()
+        return response.json()
     except requests.exceptions.HTTPError as err:
         print('Ошибка при получении ответа:', err)
-
-    if not response.ok:
-            print('Запрос завершился неудачно')
-            return None
-
-        return response.json()
 
 
 def get_stat_hh():
