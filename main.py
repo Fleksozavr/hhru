@@ -49,7 +49,6 @@ def get_stat_hh():
                         vacancy['salary'].get('to'))
                     if predicted_salary:
                         salary_by_vacancies_hh.append(predicted_salary)
-        vacancies = get_vacancies_hh(language, page=page)
         total_vacancies = vacancies['found']
         average_salary = None
         if salary_by_vacancies_hh:
@@ -114,7 +113,6 @@ def get_statistic_vacancies_sj(sj_token):
                                                       vacancy["payment_to"])
                 if predicted_salary:
                     salary_by_vacancies_sj.append(predicted_salary)
-        vacancies = get_vacancies_sj(language, page=page)
         total_vacancies = vacancies['total']
         average_salary = None
         if salary_by_vacancies_sj:
