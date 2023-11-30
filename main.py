@@ -15,11 +15,7 @@ def get_vacancies_hh(language, page=0):
     params = {'text': language, 'area': area, 'page': page}
 
     response = requests.get(url, params=params)
-    try:
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as err:
-        print('Ошибка при получении ответа:', err)
+    return response.json()
 
 
 def get_stat_hh():
@@ -139,6 +135,12 @@ def create_table(title, statistics):
 
 def main():
     load_dotenv()
+
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print('Ошибка при получении ответа:', err)
+
     sj_token = os.getenv('SJ_TOKEN')
     hh_table = create_table(HH_TITLE, get_stat_hh())
 
