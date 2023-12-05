@@ -27,7 +27,7 @@ def get_stat_hh():
     ]
     for language in languages:
         vacancies_processed = 0
-        salary_by_vacancies = []
+        predicted_salaries = []
         for page in count(0):
             vacancies = get_vacancies_hh(language, page=page)
             if vacancies and page >= vacancies["pages"] - 1:
@@ -39,16 +39,16 @@ def get_stat_hh():
                         vacancy['salary'].get('from'),
                         vacancy['salary'].get('to'))
                     if predicted_salary:
-                        salary_by_vacancies_hh.append(predicted_salary)
+                        predicted_salaries_hh.append(predicted_salary)
         total_vacancies = vacancies['found']
         average_salary = None
-        if salary_by_vacancies_hh:
+        if predicted_salaries_hh:
             average_salary = int(
-                sum(salary_by_vacancies_hh) / len(salary_by_vacancies_hh))
+                sum(predicted_salaries_hh) / len(predicted_salaries_hh))
 
         vacancies_by_language[language] = {
             'vacancies_found': total_vacancies,
-            'vacancies_processed': len(salary_by_vacancies_hh),
+            'vacancies_processed': len(predicted_salaries_hh),
             'average_salary': average_salary
         }
     return vacancies_by_language
@@ -93,7 +93,7 @@ def get_statistic_vacancies_sj(sj_token):
         "Shell"
     ]
     for language in languages:
-        salary_by_vacancies = []
+        predicted_salaries = []
         for page in count(0, 1):
             vacancies = get_vacancies_sj(language, page=page)
             if not vacancies['objects']:
@@ -103,16 +103,16 @@ def get_statistic_vacancies_sj(sj_token):
                 predicted_salary = predict_rub_salary(vacancy["payment_from"],
                                                       vacancy["payment_to"])
                 if predicted_salary:
-                    salary_by_vacancies_sj.append(predicted_salary)
+                    predicted_salaries.append(predicted_salary)
         total_vacancies = vacancies['total']
         average_salary = None
-        if salary_by_vacancies_sj:
+        if predicted_salaries:
             average_salary = int(
-                sum(salary_by_vacancies_sj) / len(salary_by_vacancies_sj))
+                sum(predicted_salaries) / len(predicted_salaries))
     
         vacancies_by_language[language] = {
             'vacancies_found': total_vacancies,
-            'vacancies_processed': len(salary_by_vacancies_sj),
+            'vacancies_processed': len(predicted_salaries),
             'average_salary': average_salary
         }
     
@@ -135,19 +135,19 @@ def create_table(title, statistics):
 
 def main():
     load_dotenv()
+    superjob_token = os.getenv('SUPERJOB_SECRET_KEY')
+    
+    try:
+        hh_table = create_table(HH_TITLE, get_statistic_vacancies_hh())
+    except requests.exceptions.RequestException as hh_err:
+        hh_table = f"Ошибка при получении данных с HeadHunter: {hh_err}"
 
     try:
-        response.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        print('Ошибка при получении ответа:', err)
-
-    sj_token = os.getenv('SJ_TOKEN')
-    hh_table = create_table(HH_TITLE, get_stat_hh())
-
-    superjob_table = create_table(SJ_TITLE,
-                                  get_statistic_vacancies_sj(sj_token))
+        superjob_table = create_table(SJ_TITLE, get_statistic_vacancies_sj(superjob_token))
+    except requests.exceptions.RequestException as sj_err:
+        superjob_table = f"Ошибка при получении данных с SuperJob: {sj_err}"
+        
     print(f"{superjob_table}\n{hh_table}")
-
 
 if __name__ == "__main__":
     main()
