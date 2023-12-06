@@ -27,7 +27,7 @@ def get_stat_hh():
     ]
     for language in languages:
         vacancies_processed = 0
-        predicted_salaries = []
+        predicted_salaries_hh = []
         for page in count(0):
             vacancies = get_vacancies_hh(language, page=page)
             if vacancies and page >= vacancies["pages"] - 1:
@@ -135,10 +135,10 @@ def create_table(title, statistics):
 
 def main():
     load_dotenv()
-    superjob_token = os.getenv('SUPERJOB_SECRET_KEY')
+    superjob_token = os.getenv('SJ_TOKEN')
     
     try:
-        hh_table = create_table(HH_TITLE, get_statistic_vacancies_hh())
+        hh_table = create_table(HH_TITLE, get_stat_hh())
     except requests.exceptions.RequestException as hh_err:
         hh_table = f"Ошибка при получении данных с HeadHunter: {hh_err}"
 
